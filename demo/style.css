@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin-inline: auto;
+    padding-inline: 1em;
+    max-inline-size: 60em;
+}
+
+textarea {
+    inline-size: 100%;
+    min-block-size: 50vb;
+    resize: block;
+}
+
+output {
+    display: block;
+    text-align: end;
+    font-size: 200%;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+    }
+}
