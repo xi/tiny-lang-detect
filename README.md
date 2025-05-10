@@ -14,7 +14,7 @@ Example usage:
 $ ./download_data.sh
 $ python gen_model.py en de -n 10 > en_de.json
 $ python test.py en_de.json
-overall correctness 96.3% (1000)
+963 out of 1000 samples were detected correctly (96.3%)
 ```
 
 A model might look like this:

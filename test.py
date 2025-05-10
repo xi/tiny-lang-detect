@@ -85,7 +85,10 @@ def test(model):
                     if actual == lang:
                         correct += 1
 
-    print(f'overall correctness {correct / total:.1%} ({total})')
+    print(
+        f'{correct} out of {total} samples were detected correctly'
+        f' ({correct / total:.1%})'
+    )
 
 
 if __name__ == '__main__':
