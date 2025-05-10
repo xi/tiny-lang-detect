@@ -35,15 +35,15 @@ For examples how to use a model to classify languages, see `test.py` and
 ## How does it work?
 
 `langdetect` works by comparing n-gram frequencies. For example, the 3-gram
-" th" is much more common in english than in german.
+" th" is much more common in English than in German.
 
 Before counting n-grams, it does some pre-processing, e.g. removing
-punctuation, URLs, or latin characters in non-latin texts. The it uses bayesian
-methods to find the most likely language for those frequencies.
+punctuation, URLs, or Latin characters in non-Latin texts. Then it uses
+Bayesian methods to find the most likely language for those frequencies.
 
 The examples in this repo are much simpler though. They do not do any
 pre-processing, and they use the euclidean distance to find the best match.
-This is ultimately a tradeoff between accuracy and complexity.
+This is ultimately a trade-off between accuracy and simplicity.
 
 To simplify the model, `gen_model.py` filters out all but the most significant
 n-grams. N-grams are considered more significant if the absolute difference of
