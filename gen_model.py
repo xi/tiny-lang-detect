@@ -21,8 +21,8 @@ def get_model(*langs, n=8, ndigits=None):
     ngrams = list(ngrams)
 
     # prioritize by biggest absolute difference
-    ngrams.sort(key=lambda k: abs_diff([d.get(k, 0) for d in data.values()]))
-    ngrams = ngrams[-n:]
+    ngrams.sort(key=lambda k: -abs_diff([d.get(k, 0) for d in data.values()]))
+    ngrams = ngrams[:n]
 
     return {
         'ngrams': ngrams,
