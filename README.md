@@ -12,7 +12,6 @@ Example usage:
 
 ```sh
 $ ./download_data.sh
-$ python gen_model.py en de -n 10
 $ python gen_model.py en de -n 10 > en_de.json
 $ python test.py en_de.json
 overall correctness 96.3% (1000)
