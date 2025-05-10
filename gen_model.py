@@ -8,7 +8,7 @@ def get_data(lang):
     return {k: v / raw['n_words'][len(k) - 1] for k, v in raw['freq'].items()}
 
 
-def get_model(lang1, lang2, n=8):
+def get_model(lang1, lang2, n=8, ndigits=None):
     data1 = get_data(lang1)
     data2 = get_data(lang2)
 
@@ -21,8 +21,8 @@ def get_model(lang1, lang2, n=8):
     return {
         'ngrams': ngrams,
         'freq': {
-            lang1: [data1.get(g, 0) for g in ngrams],
-            lang2: [data2.get(g, 0) for g in ngrams],
+            lang1: [round(data1.get(g, 0), ndigits) for g in ngrams],
+            lang2: [round(data2.get(g, 0), ndigits) for g in ngrams],
         },
     }
 
@@ -31,7 +31,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('lang', nargs=2)
     parser.add_argument('-n', type=int, default=8)
+    parser.add_argument('-p', type=int, default=4)
     args = parser.parse_args()
 
-    model = get_model(*args.lang, n=args.n)
+    model = get_model(*args.lang, n=args.n, ndigits=args.p)
     print(json.dumps(model))
