@@ -42,6 +42,19 @@ def classify(model, text):
     return min(model['freq'], key=lambda lang: dist(model['freq'][lang], freq))
 ```
 
+## An even simpler classifier
+
+To take this idea to the exteme, you could reduce the model to the single most
+siginificant n-gram:
+
+```py
+def classify(text):
+    freq = text.count('o') / len(text)
+    return 'en' if freq > 0.05 else 'de'
+```
+
+This classifier still has an accuracy of 82.1% on the test data.
+
 ## How does it work?
 
 `langdetect` works by comparing n-gram frequencies. For example, the 3-gram
