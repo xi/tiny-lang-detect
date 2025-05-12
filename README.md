@@ -56,5 +56,5 @@ pre-processing, and they use the euclidean distance to find the best match.
 This is ultimately a trade-off between accuracy and simplicity.
 
 To simplify the model, `gen_model.py` filters out all but the most significant
-n-grams. N-grams are considered more significant if the absolute difference of
-their frequencies in the candidate language is big.
+n-grams. N-grams are considered more significant if their frequencies have a
+large absolute difference beween the candidate languages.
