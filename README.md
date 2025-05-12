@@ -29,8 +29,18 @@ A model might look like this:
 }
 ```
 
-For examples how to use a model to classify languages, see `test.py` and
-`demo/demo.js`.
+You can use the model like this:
+
+```py
+def dist(a, b):
+    return sum((av - bv) ** 2 for av, bv in zip(a, b))
+
+
+def classify(model, text):
+    n = len(text) + 1
+    freq = [text.count(g) / (n - len(g)) for g in model['ngrams']]
+    return min(model['freq'], key=lambda lang: dist(model['freq'][lang], freq))
+```
 
 ## How does it work?
 
