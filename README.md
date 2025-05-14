@@ -14,7 +14,7 @@ Example usage:
 $ ./download_data.sh
 $ python gen_model.py en de -n 10 > en_de.json
 $ python test.py en_de.json
-963 out of 1000 samples were detected correctly (96.3%)
+984 out of 1000 samples were detected correctly (98.4%)
 ```
 
 A model might look like this:
@@ -32,14 +32,16 @@ A model might look like this:
 You can use the model like this:
 
 ```py
-def dist(a, b):
-    return sum((av - bv) ** 2 for av, bv in zip(a, b))
-
+def dist(p, q):
+    # https://en.wikipedia.org/wiki/Kullback-Leibler_divergence
+    pp = [pi + 0.0000001 for pi in p]
+    qq = [qi + 0.0000001 for qi in q]
+    return sum(pi * math.log(pi / qi) for pi, qi in zip(pp, qq)) / sum(pp)
 
 def classify(model, text):
     n = len(text) + 1
     freq = [text.count(g) / (n - len(g)) for g in model['ngrams']]
-    return min(model['freq'], key=lambda lang: dist(model['freq'][lang], freq))
+    return min(model['freq'], key=lambda lang: dist(freq, model['freq'][lang]))
 ```
 
 ## An even simpler classifier
@@ -65,8 +67,7 @@ punctuation, URLs, or Latin characters in non-Latin texts. Then it uses
 Bayesian methods to find the most likely language for those frequencies.
 
 The examples in this repo are much simpler though. They do not do any
-pre-processing, and they use the euclidean distance to find the best match.
-This is ultimately a trade-off between accuracy and simplicity.
+pre-processing. This is ultimately a trade-off between accuracy and simplicity.
 
 To simplify the model, `gen_model.py` filters out all but the most significant
 n-grams. N-grams are considered more significant if their frequencies have a

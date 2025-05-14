@@ -1,5 +1,6 @@
 import argparse
 import json
+import math
 
 LANG_MAP = {
     'afr': 'af',
@@ -60,14 +61,23 @@ LANG_MAP = {
 }
 
 
-def dist(a, b):
-    return sum((av - bv) ** 2 for av, bv in zip(a, b))
+def dist(p, q):
+    # KL divergence breaks down for a single value
+    if len(p) == 1:
+        return abs(p[0] - q[0])
+
+    # 0 does not mean impossible, just very unlikely
+    pp = [pi + 0.0000001 for pi in p]
+    qq = [qi + 0.0000001 for qi in q]
+
+    # https://en.wikipedia.org/wiki/Kullback-Leibler_divergence
+    return sum(pi * math.log(pi / qi) for pi, qi in zip(pp, qq)) / sum(pp)
 
 
 def classify(model, text):
     n = len(text) + 1
     freq = [text.count(g) / (n - len(g)) for g in model['ngrams']]
-    return min(model['freq'], key=lambda lang: dist(model['freq'][lang], freq))
+    return min(model['freq'], key=lambda lang: dist(freq, model['freq'][lang]))
 
 
 def test(model):

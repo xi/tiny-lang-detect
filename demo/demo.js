@@ -10,8 +10,22 @@ var count = (text, ngram) => {
     return (text.match(new RegExp(ngram, 'g')) || []).length;
 };
 
-var dist = (a, b) => {
-    return a.reduce((sum, v, i) => sum + Math.pow(v - b[i], 2), 0);
+var sum = a => {
+    return a.reduce((s, v) => s + v, 0);
+};
+
+var dist = (p, q) => {
+    // KL divergence breaks down for a single value
+    if (p.length === 1) {
+        return Math.abs(p[0] - q[0]);
+    }
+
+    // 0 does not mean impossible, just very unlikely
+    var pp = p.map(pi => pi + 0.0000001);
+    var qq = q.map(qi => qi + 0.0000001);
+
+    // https://en.wikipedia.org/wiki/Kullback-Leibler_divergence
+    return sum(pp.map((pi, i) => pi * Math.log(pi / qq[i]))) / sum(pp);
 };
 
 var classify = text => {
@@ -20,7 +34,7 @@ var classify = text => {
     var best = null;
     var bestDist = Infinity;
     for (const lang of Object.keys(model.freq)) {
-        var d = dist(model.freq[lang], freq);
+        var d = dist(freq, model.freq[lang]);
         if (d < bestDist) {
             bestDist = d;
             best = lang;
