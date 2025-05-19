@@ -10,32 +10,17 @@ var count = (text, ngram) => {
     return (text.match(new RegExp(ngram, 'g')) || []).length;
 };
 
-var sum = a => a.reduce((s, v) => s + v, 0);
 var prod = a => a.reduce((s, v) => s * v, 1);
+var max = (a, key) => a.reduce((m, v) => !m || key(v) > key(m) ? v : m, null);
 
-var dist = (p, q) => {
-    if (p.length === 1) {
-        return Math.abs(p[0] - q[0]);
-    }
-
-    // 0 does not mean impossible, just very unlikely
-    var qq = q.map(qi => qi + 0.0000001);
-    return 1 / prod(p.map((pi, i) => Math.pow(qq[i], pi / sum(p))));
+var probability = (p, q) => {
+    return prod(p.map((pi, i) => Math.pow(q[i], pi)));
 };
 
 var classify = text => {
     var n = text.length + 1;
     var freq = model.ngrams.map(g => count(text, g) / (n - g.length));
-    var best = null;
-    var bestDist = Infinity;
-    for (const lang of Object.keys(model.freq)) {
-        var d = dist(freq, model.freq[lang]);
-        if (d < bestDist) {
-            bestDist = d;
-            best = lang;
-        }
-    }
-    return best;
+    return max(Object.keys(model.freq), lang => probability(freq, model.freq[lang]));
 };
 
 var textarea = document.querySelector('textarea');

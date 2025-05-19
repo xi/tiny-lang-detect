@@ -61,19 +61,20 @@ LANG_MAP = {
 }
 
 
-def dist(p, q):
+def probability(p, q):
     if len(p) == 1:
-        return abs(p[0] - q[0])
+        p = [p[0], 1 - p[0]]
+        q = [q[0], 1 - q[0]]
 
     # 0 does not mean impossible, just very unlikely
     qq = [qi + 0.0000001 for qi in q]
-    return 1 / math.prod(qi ** (pi / sum(p)) for pi, qi in zip(p, qq))
+    return math.prod(qi ** pi for pi, qi in zip(p, qq))
 
 
 def classify(model, text):
     n = len(text) + 1
     freq = [text.count(g) / (n - len(g)) for g in model['ngrams']]
-    return min(model['freq'], key=lambda lang: dist(freq, model['freq'][lang]))
+    return max(model['freq'], key=lambda lang: probability(freq, model['freq'][lang]))
 
 
 def test(model):

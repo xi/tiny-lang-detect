@@ -32,15 +32,13 @@ A model might look like this:
 You can use the model like this:
 
 ```py
-def dist(p, q):
-    # 0 does not mean impossible, just very unlikely
-    qq = [qi + 0.0000001 for qi in q]
-    return 1 / math.prod(qi ** (pi / sum(p)) for pi, qi in zip(p, qq))
+def probability(p, q):
+    return math.prod(qi ** pi for pi, qi in zip(p, q))
 
 def classify(model, text):
     n = len(text) + 1
     freq = [text.count(g) / (n - len(g)) for g in model['ngrams']]
-    return min(model['freq'], key=lambda lang: dist(freq, model['freq'][lang]))
+    return max(model['freq'], key=lambda lang: probability(freq, model['freq'][lang]))
 ```
 
 ## An even simpler classifier
