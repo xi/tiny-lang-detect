@@ -33,10 +33,9 @@ You can use the model like this:
 
 ```py
 def dist(p, q):
-    # https://en.wikipedia.org/wiki/Kullback-Leibler_divergence
-    pp = [pi + 0.0000001 for pi in p]
+    # 0 does not mean impossible, just very unlikely
     qq = [qi + 0.0000001 for qi in q]
-    return sum(pi * math.log(pi / qi) for pi, qi in zip(pp, qq)) / sum(pp)
+    return 1 / math.prod(qi ** (pi / sum(p)) for pi, qi in zip(p, qq))
 
 def classify(model, text):
     n = len(text) + 1

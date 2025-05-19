@@ -10,22 +10,17 @@ var count = (text, ngram) => {
     return (text.match(new RegExp(ngram, 'g')) || []).length;
 };
 
-var sum = a => {
-    return a.reduce((s, v) => s + v, 0);
-};
+var sum = a => a.reduce((s, v) => s + v, 0);
+var prod = a => a.reduce((s, v) => s * v, 1);
 
 var dist = (p, q) => {
-    // KL divergence breaks down for a single value
     if (p.length === 1) {
         return Math.abs(p[0] - q[0]);
     }
 
     // 0 does not mean impossible, just very unlikely
-    var pp = p.map(pi => pi + 0.0000001);
     var qq = q.map(qi => qi + 0.0000001);
-
-    // https://en.wikipedia.org/wiki/Kullback-Leibler_divergence
-    return sum(pp.map((pi, i) => pi * Math.log(pi / qq[i]))) / sum(pp);
+    return 1 / prod(p.map((pi, i) => Math.pow(qq[i], pi / sum(p))));
 };
 
 var classify = text => {
