@@ -62,13 +62,10 @@ LANG_MAP = {
 
 
 def probability(p, q):
-    if len(p) == 1:
-        p = [p[0], 1 - p[0]]
-        q = [q[0], 1 - q[0]]
-
     # 0 does not mean impossible, just very unlikely
-    qq = [qi + 0.0000001 for qi in q]
-    return math.prod(qi ** pi for pi, qi in zip(p, qq))
+    a = 0.0000001
+    qq = [qi * (1 - 2 * a) + a for qi in q]
+    return math.prod(qi ** pi * (1 - qi) ** (1 - pi) for pi, qi in zip(p, qq))
 
 
 def classify(model, text):

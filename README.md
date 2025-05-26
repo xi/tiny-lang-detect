@@ -14,7 +14,7 @@ Example usage:
 $ ./download_data.sh
 $ python gen_model.py en de -n 10 > en_de.json
 $ python test.py en_de.json
-984 out of 1000 samples were detected correctly (98.4%)
+981 out of 1000 samples were detected correctly (98.1%)
 ```
 
 A model might look like this:
@@ -33,7 +33,7 @@ You can use the model like this:
 
 ```py
 def probability(p, q):
-    return math.prod(qi ** pi for pi, qi in zip(p, q))
+    return math.prod(qi ** pi * (1 - qi) ** (1 - pi) for pi, qi in zip(p, q))
 
 def classify(model, text):
     n = len(text) + 1

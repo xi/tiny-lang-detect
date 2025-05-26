@@ -14,7 +14,7 @@ var prod = a => a.reduce((s, v) => s * v, 1);
 var max = (a, key) => a.reduce((m, v) => !m || key(v) > key(m) ? v : m, null);
 
 var probability = (p, q) => {
-    return prod(p.map((pi, i) => Math.pow(q[i], pi)));
+    return prod(p.map((pi, i) => Math.pow(q[i], pi) * Math.pow(1 - q[i], 1 - pi)));
 };
 
 var classify = text => {
