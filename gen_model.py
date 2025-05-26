@@ -41,4 +41,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     model = get_model(*args.lang, n=args.n, ndigits=args.p)
-    print(json.dumps(model))
+    print(json.dumps(model, ensure_ascii=False))
