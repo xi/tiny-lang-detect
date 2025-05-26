@@ -68,4 +68,4 @@ pre-processing. This is ultimately a trade-off between accuracy and simplicity.
 
 To simplify the model, `gen_model.py` filters out all but the most significant
 n-grams. N-grams are considered more significant if their frequencies have a
-large absolute difference beween the candidate languages.
+large absolute difference between the candidate languages.
