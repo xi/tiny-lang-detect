@@ -43,8 +43,8 @@ def classify(model, text):
 
 ## An even simpler classifier
 
-To take this idea to the exteme, you could reduce the model to the single most
-siginificant n-gram:
+To take this idea to the extreme, you could reduce the model to the single most
+significant n-gram:
 
 ```py
 def classify(text):
